@@ -1,4 +1,9 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using comp367_Quiz4.Data;
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<comp367_Quiz4Context>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("comp367_Quiz4Context") ?? throw new InvalidOperationException("Connection string 'comp367_Quiz4Context' not found.")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
