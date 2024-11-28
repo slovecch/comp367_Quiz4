@@ -1,0 +1,26 @@
+trigger:
+  - main
+
+pool:
+  name: Default # Replace with your self-hosted agent pool name
+
+steps:
+- task: UseDotNet@2
+  inputs:
+    packageType: sdk
+    version: 6.x # Adjust based on your ASP.NET version
+
+- script: |
+    dotnet restore
+    dotnet build
+  displayName: 'Restore and Build'
+
+- script: |
+    dotnet publish -c Release -o $(Build.ArtifactStagingDirectory)
+  displayName: 'Publish App'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: $(Build.ArtifactStagingDirectory)
+    artifactName: drop
+    publishLocation: Container
